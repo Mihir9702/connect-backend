@@ -329,6 +329,7 @@ export class UserResolver {
     }
 
     u.friendRequests = filter(u.friendRequests, f);
+    f.friendRequests = filter(f.friendRequests, u);
 
     try {
       await Promise.all([User.save(u), User.save(f)]);

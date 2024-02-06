@@ -14,6 +14,11 @@ import { Channel } from "../entities/Channel";
 import { randomNumberGenerator } from "../helpers/random";
 import { MessageInput } from "../types";
 import { check, push } from "../helpers/array";
+import { createServer } from "http";
+import { Server } from "socket.io";
+
+// const server = createServer();
+// const io = new Server(server);
 
 @Resolver()
 export class MessageResolver {
@@ -35,9 +40,7 @@ export class MessageResolver {
     const user = await User.findOne({
       where: { id: req.session.idx },
     });
-
-    const { u } = check({ user });
-
+    check({ user });
     const channel = await Channel.findOne({
       where: { channelId },
       relations: [
@@ -49,7 +52,6 @@ export class MessageResolver {
         "users.channels",
       ],
     });
-
     if (!channel) throw new Error("messages - no channel");
 
     const messages = channel.messages || [];
